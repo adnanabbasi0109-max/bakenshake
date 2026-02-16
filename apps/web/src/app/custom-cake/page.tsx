@@ -16,6 +16,7 @@ import {
   Cake,
 } from "lucide-react";
 import { useCakeBuilderStore } from "@/store/cakeBuilderStore";
+import { useCartStore } from "@/store/cartStore";
 import { customCakeAPI } from "@/lib/api";
 import Button from "@/components/ui/Button";
 import ShapeAndSizeStep from "@/components/cake-builder/ShapeAndSizeStep";
@@ -37,11 +38,10 @@ const steps = [
 export default function CustomCakePage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
-  const [orderId, setOrderId] = useState<string | null>(null);
 
   const { specifications, previewImageUrl, pricing, reset } =
     useCakeBuilderStore();
+  const addItem = useCartStore((s) => s.addItem);
 
   const goNext = () => setCurrentStep((s) => Math.min(s + 1, steps.length - 1));
   const goPrev = () => setCurrentStep((s) => Math.max(s - 1, 0));
@@ -58,8 +58,19 @@ export default function CustomCakePage() {
 
       const data = res as { success: boolean; data?: { _id: string } };
       if (data.success && data.data) {
-        setOrderId(data.data._id);
-        setOrderSuccess(true);
+        const orderId = data.data._id;
+        const cakeName = `Custom ${specifications.flavor} Cake (${specifications.shape})`;
+
+        addItem({
+          productId: orderId,
+          variantId: `custom-${orderId}`,
+          name: cakeName,
+          image: previewImageUrl || "https://images.unsplash.com/photo-1557979619-445218f326b9?w=400&q=80",
+          size: specifications.size,
+          price: pricing?.total || 0,
+        });
+
+        reset();
       }
     } catch {
       // Silently handle — user can retry
@@ -67,59 +78,6 @@ export default function CustomCakePage() {
       setIsSubmitting(false);
     }
   };
-
-  const handleNewCake = () => {
-    reset();
-    setCurrentStep(0);
-    setOrderSuccess(false);
-    setOrderId(null);
-  };
-
-  if (orderSuccess) {
-    return (
-      <div className="min-h-screen bg-brand-cream/30 flex items-center justify-center px-4">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="bg-white rounded-brand p-8 max-w-md w-full text-center shadow-lg"
-        >
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Check size={32} className="text-green-600" />
-          </div>
-          <h2 className="font-display text-2xl font-bold text-text-primary mb-2">
-            Custom Cake Order Placed!
-          </h2>
-          <p className="text-text-secondary mb-1">
-            Your cake is being reviewed by our bakers.
-          </p>
-          {orderId && (
-            <p className="text-xs text-text-muted mb-6">
-              Order ID: {orderId}
-            </p>
-          )}
-          {pricing && (
-            <p className="text-lg font-bold text-brand-red mb-6">
-              Total: ₹{pricing.total}{" "}
-              <span className="text-xs font-normal text-text-muted">
-                +5% GST
-              </span>
-            </p>
-          )}
-          <div className="flex gap-3">
-            <Button variant="outline" fullWidth onClick={handleNewCake}>
-              Design Another
-            </Button>
-            <Button
-              fullWidth
-              href="/"
-            >
-              Back to Shop
-            </Button>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-brand-cream/30">
@@ -230,7 +188,7 @@ export default function CustomCakePage() {
                     disabled={isSubmitting}
                   >
                     <ShoppingCart size={16} className="mr-2" />
-                    {isSubmitting ? "Placing Order..." : "Add Custom Cake to Cart"}
+                    {isSubmitting ? "Adding..." : "Pay"}
                   </Button>
                 )}
               </div>

@@ -92,6 +92,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           alt={item.name}
                           fill
                           className="object-cover"
+                          unoptimized={item.variantId.startsWith("custom-")}
                         />
                       </div>
                       <div className="flex-1 min-w-0">

@@ -94,6 +94,23 @@ exports.getOrder = async (req, res, next) => {
   }
 };
 
+// GET /api/custom-cakes/my-orders
+exports.getMyOrders = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: 'Login required to view orders' });
+    }
+
+    const orders = await CustomCakeOrder.find({ userId: req.user._id })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.json({ success: true, data: orders });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // POST /api/custom-cakes/calculate-price
 exports.calculatePrice = async (req, res, next) => {
   try {

@@ -12,6 +12,9 @@ router.post('/generate-preview', customCakeController.generatePreview);
 // Requires auth — create a custom cake order
 router.post('/create', optionalAuth, customCakeController.createOrder);
 
+// Requires auth — get all orders for the logged-in user
+router.get('/my-orders', protect, customCakeController.getMyOrders);
+
 // Requires auth — get order details
 router.get('/:id', optionalAuth, customCakeController.getOrder);
 

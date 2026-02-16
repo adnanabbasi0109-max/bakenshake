@@ -14,6 +14,7 @@ const productRoutes = require('./routes/product.routes');
 const categoryRoutes = require('./routes/category.routes');
 const deliveryRoutes = require('./routes/delivery.routes');
 const customCakeRoutes = require('./routes/custom-cake.routes');
+const paymentRoutes = require('./routes/payment.routes');
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/delivery', deliveryRoutes);
 app.use('/api/custom-cakes', customCakeRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

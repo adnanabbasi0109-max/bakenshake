@@ -2,13 +2,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, ShoppingBag, User, MapPin, Menu, X } from "lucide-react";
+import { Search, ShoppingBag, User, MapPin, Menu, X, Package } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { useLocationStore } from "@/store/locationStore";
 import CartDrawer from "@/components/cart/CartDrawer";
 
 const navLinks = [
   { label: "Cakes", href: "/category/cakes" },
+  { label: "Custom Cake", href: "/custom-cake" },
   { label: "Bakery", href: "/category/bakery" },
   { label: "Beverages", href: "/category/beverages" },
   { label: "Food Menu", href: "/category/food-menu" },
@@ -100,6 +101,15 @@ export default function Header() {
                 <Search size={20} />
               </button>
 
+              {/* Orders */}
+              <Link
+                href="/orders"
+                className="hidden md:flex p-2 hover:bg-brand-cream rounded-full transition-colors"
+                title="My Orders"
+              >
+                <Package size={20} />
+              </Link>
+
               {/* Account */}
               <Link
                 href="/account"
@@ -158,6 +168,13 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href="/orders"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block py-3 px-4 text-text-primary font-medium hover:bg-brand-cream rounded-brand transition-colors"
+              >
+                My Orders
+              </Link>
               <Link
                 href="/account"
                 onClick={() => setMobileMenuOpen(false)}

@@ -56,7 +56,7 @@ export default function PreviewPanel() {
       <div className="p-4 border-b border-brand-sage/20">
         <h3 className="font-display text-lg font-bold text-text-primary flex items-center gap-2">
           <Sparkles size={18} className="text-brand-red" />
-          AI Preview
+          Cake Preview
         </h3>
         <p className="text-xs text-text-muted mt-1">
           See how your custom cake will look
@@ -71,15 +71,15 @@ export default function PreviewPanel() {
               <div className="absolute inset-0 rounded-full border-4 border-brand-sage/30" />
               <div className="absolute inset-0 rounded-full border-4 border-brand-red border-t-transparent animate-spin" />
             </div>
-            <p className="font-semibold text-text-primary">Generating your cake...</p>
+            <p className="font-semibold text-text-primary">Our Chef is preparing the cake design for you</p>
             <p className="text-xs text-text-muted mt-1">
-              Our AI is baking your preview (5-15 seconds)
+              Please wait a moment (5-15 seconds)
             </p>
           </div>
         ) : previewImageUrl ? (
           <Image
             src={previewImageUrl}
-            alt="AI-generated cake preview"
+            alt="Cake preview"
             fill
             sizes="(max-width: 1024px) 100vw, 400px"
             className="object-cover"
@@ -93,7 +93,7 @@ export default function PreviewPanel() {
               Your cake preview will appear here
             </p>
             <p className="text-xs text-text-muted">
-              Click &ldquo;Generate Preview&rdquo; to see an AI visualization of your cake
+              Click &ldquo;Generate Preview&rdquo; to see a preview of your cake
             </p>
           </div>
         )}
@@ -137,7 +137,7 @@ export default function PreviewPanel() {
 
         {previewImageUrl && (
           <p className="text-xs text-text-muted text-center italic">
-            This is an AI-generated preview. The actual cake may vary slightly.
+            This is a cake preview. The actual cake may vary slightly.
           </p>
         )}
       </div>

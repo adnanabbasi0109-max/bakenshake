@@ -9,7 +9,7 @@ export default function CakeBuilderCTA() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="relative bg-brand-lavender rounded-brand overflow-hidden">
           {/* Pattern overlay */}
-          <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 opacity-20 pointer-events-none">
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <pattern id="circles" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">

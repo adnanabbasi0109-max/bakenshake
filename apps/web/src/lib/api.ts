@@ -134,6 +134,51 @@ export const customCakeAPI = {
     }),
 
   getOrder: (id: string) => fetchAPI(`/custom-cakes/${id}`),
+
+  getMyOrders: () =>
+    fetchAPI<{
+      success: boolean;
+      data: Array<{
+        _id: string;
+        specifications: {
+          shape: string;
+          size: string;
+          flavor: string;
+          frostingType: string;
+          frostingColor: string;
+          filling: string;
+          toppings: string[];
+          theme: string;
+          message: string;
+          eggPreference: string;
+        };
+        aiPreviewImageUrl?: string;
+        calculatedPrice: number;
+        status: string;
+        customerNotes?: string;
+        createdAt: string;
+        updatedAt: string;
+      }>;
+    }>("/custom-cakes/my-orders"),
+};
+
+// Payment (Razorpay) APIs
+export const paymentAPI = {
+  createOrder: (amountPaise: number) =>
+    fetchAPI<{ success: boolean; orderId: string; keyId: string }>(
+      "/payment/create-order",
+      { method: "POST", body: JSON.stringify({ amount: amountPaise }) }
+    ),
+
+  verify: (data: {
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    razorpay_signature: string;
+  }) =>
+    fetchAPI<{ success: boolean; message?: string }>("/payment/verify", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
 };
 
 export default fetchAPI;
