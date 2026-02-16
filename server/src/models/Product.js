@@ -40,6 +40,26 @@ const productSchema = new mongoose.Schema(
     ],
     shelfLife: String,
     ingredients: String,
+
+    // Subscription fields
+    subscriptionEligible: { type: Boolean, default: false },
+    nutritionTags: [
+      {
+        type: String,
+        enum: [
+          'high_protein', 'low_sugar', 'low_carb', 'high_fiber',
+          'keto_friendly', 'gluten_free', 'sugar_free', 'whole_grain',
+          'low_calorie', 'vegan', 'organic',
+        ],
+      },
+    ],
+    shelfLifeType: {
+      type: String,
+      enum: ['fresh', 'shelf_stable'],
+    },
+    subscriptionDiscountPercent: { type: Number, default: 10, min: 0, max: 50 },
+    maxSubscriptionQty: { type: Number, default: 5 },
+
     isActive: { type: Boolean, default: true },
     isFeatured: { type: Boolean, default: false },
     sortOrder: { type: Number, default: 0 },
@@ -55,5 +75,6 @@ productSchema.index({ name: 'text', description: 'text', shortDescription: 'text
 productSchema.index({ slug: 1 });
 productSchema.index({ category: 1, isActive: 1 });
 productSchema.index({ isFeatured: 1, isActive: 1 });
+productSchema.index({ subscriptionEligible: 1, shelfLifeType: 1, isActive: 1 });
 
 module.exports = mongoose.model('Product', productSchema);

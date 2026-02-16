@@ -48,7 +48,7 @@ const featuredProducts = [
     name: "Butter Croissant",
     slug: "butter-croissant",
     shortDescription: "Freshly baked French butter croissant",
-    images: [{ url: "https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=600&q=80", alt: "Butter croissant", isPrimary: true }],
+    images: [{ url: "https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=600&q=80", alt: "Butter croissant", isPrimary: true }],
     variants: [{ _id: "v5", size: "Single", price: 79 }],
     dietaryTags: ["eggless", "veg"],
     ratings: { average: 4.5, count: 334 },

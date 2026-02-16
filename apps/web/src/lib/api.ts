@@ -181,4 +181,133 @@ export const paymentAPI = {
     }),
 };
 
+// Subscription Plan APIs
+export const subscriptionPlanAPI = {
+  getAll: (params?: Record<string, string | number | boolean | undefined>) =>
+    fetchAPI("/subscription-plans", { params, next: { revalidate: 60 } }),
+
+  getFeatured: () =>
+    fetchAPI("/subscription-plans/featured", { next: { revalidate: 60 } }),
+
+  getBySlug: (slug: string) =>
+    fetchAPI(`/subscription-plans/${slug}`, { next: { revalidate: 60 } }),
+
+  getSwapOptions: (slug: string, productId: string) =>
+    fetchAPI(`/subscription-plans/${slug}/swap-options`, {
+      params: { productId },
+    }),
+
+  create: (data: Record<string, unknown>) =>
+    fetchAPI("/subscription-plans", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
+  update: (id: string, data: Record<string, unknown>) =>
+    fetchAPI(`/subscription-plans/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+};
+
+// Subscription APIs
+export const subscriptionAPI = {
+  create: (data: Record<string, unknown>) =>
+    fetchAPI<{
+      success: boolean;
+      data: {
+        subscription: Record<string, unknown>;
+        razorpaySubscriptionId?: string;
+        keyId?: string;
+      };
+    }>("/subscriptions/create", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
+  getMy: () => fetchAPI("/subscriptions/my"),
+
+  getById: (id: string) => fetchAPI(`/subscriptions/${id}`),
+
+  pause: (id: string) =>
+    fetchAPI(`/subscriptions/${id}/pause`, { method: "PUT" }),
+
+  resume: (id: string) =>
+    fetchAPI(`/subscriptions/${id}/resume`, { method: "PUT" }),
+
+  cancel: (id: string, reason?: string) =>
+    fetchAPI(`/subscriptions/${id}/cancel`, {
+      method: "PUT",
+      body: JSON.stringify({ reason }),
+    }),
+
+  changeFrequency: (id: string, frequency: string) =>
+    fetchAPI(`/subscriptions/${id}/frequency`, {
+      method: "PUT",
+      body: JSON.stringify({ frequency }),
+    }),
+
+  updateAddress: (id: string, address: Record<string, unknown>) =>
+    fetchAPI(`/subscriptions/${id}/address`, {
+      method: "PUT",
+      body: JSON.stringify(address),
+    }),
+
+  updateSlot: (
+    id: string,
+    day: number,
+    slot: { start: string; end: string }
+  ) =>
+    fetchAPI(`/subscriptions/${id}/slot`, {
+      method: "PUT",
+      body: JSON.stringify({
+        preferredDeliveryDay: day,
+        preferredTimeSlot: slot,
+      }),
+    }),
+
+  suggestBasket: (data: Record<string, unknown>) =>
+    fetchAPI("/subscriptions/suggest-basket", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
+  getEligibleProducts: (
+    params?: Record<string, string | number | boolean | undefined>
+  ) => fetchAPI("/subscriptions/eligible-products", { params }),
+};
+
+// Subscription Delivery APIs
+export const subscriptionDeliveryAPI = {
+  getUpcoming: () => fetchAPI("/subscription-deliveries/upcoming"),
+
+  getById: (id: string) => fetchAPI(`/subscription-deliveries/${id}`),
+
+  skip: (id: string, reason?: string) =>
+    fetchAPI(`/subscription-deliveries/${id}/skip`, {
+      method: "PUT",
+      body: JSON.stringify({ reason }),
+    }),
+
+  unskip: (id: string) =>
+    fetchAPI(`/subscription-deliveries/${id}/unskip`, { method: "PUT" }),
+
+  swapItem: (
+    id: string,
+    oldProductId: string,
+    newProductId: string,
+    newVariantIndex?: number
+  ) =>
+    fetchAPI(`/subscription-deliveries/${id}/swap`, {
+      method: "PUT",
+      body: JSON.stringify({ oldProductId, newProductId, newVariantIndex }),
+    }),
+
+  payManual: (id: string) =>
+    fetchAPI<{ success: boolean; orderId: string; keyId: string }>(
+      `/subscription-deliveries/${id}/pay`,
+      { method: "POST" }
+    ),
+};
+
 export default fetchAPI;

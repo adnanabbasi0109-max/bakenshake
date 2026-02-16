@@ -1,6 +1,7 @@
 import HeroSection from "@/components/home/HeroSection";
 import CategoryCards from "@/components/home/CategoryCards";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
+import SubscriptionCTA from "@/components/home/SubscriptionCTA";
 import CakeBuilderCTA from "@/components/home/CakeBuilderCTA";
 
 export default function HomePage() {
@@ -9,6 +10,7 @@ export default function HomePage() {
       <HeroSection />
       <CategoryCards />
       <FeaturedProducts />
+      <SubscriptionCTA />
       <CakeBuilderCTA />
 
       {/* App Download Banner */}

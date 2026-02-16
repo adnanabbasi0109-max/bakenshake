@@ -246,7 +246,7 @@ const products = [
     shortDescription: 'Butterscotch cream-filled puff roll',
     categorySlug: 'cream-rolls',
     images: [
-      { url: 'https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=800&q=80', alt: 'Butterscotch cream roll', isPrimary: true },
+      { url: 'https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=800&q=80', alt: 'Butterscotch cream roll', isPrimary: true },
     ],
     variants: [
       { size: 'Single', weight: '80g', price: 45, sku: 'BSCR-1' },
@@ -268,7 +268,7 @@ const products = [
     shortDescription: 'Moist honey cake with toasted almonds',
     categorySlug: 'tea-cakes',
     images: [
-      { url: 'https://images.unsplash.com/photo-1486427944544-d2c246c4df6e?w=800&q=80', alt: 'Honey almond tea cake', isPrimary: true },
+      { url: 'https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?w=800&q=80', alt: 'Honey almond tea cake', isPrimary: true },
     ],
     variants: [
       { size: '250g', weight: '250g', price: 179, sku: 'HATC-250' },
@@ -330,7 +330,7 @@ const products = [
     shortDescription: 'Roasted garlic & rosemary focaccia',
     categorySlug: 'breads-buns',
     images: [
-      { url: 'https://images.unsplash.com/photo-1549931319-a545753467c8?w=800&q=80', alt: 'Garlic focaccia bread', isPrimary: true },
+      { url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80', alt: 'Garlic focaccia bread', isPrimary: true },
     ],
     variants: [
       { size: 'Regular', weight: '300g', price: 149, sku: 'GHF-300' },
@@ -395,7 +395,7 @@ const products = [
     shortDescription: 'Freshly baked French butter croissant',
     categorySlug: 'pastries-patties',
     images: [
-      { url: 'https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=800&q=80', alt: 'Butter croissant', isPrimary: true },
+      { url: 'https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=800&q=80', alt: 'Butter croissant', isPrimary: true },
     ],
     variants: [
       { size: 'Single', weight: '70g', price: 79, sku: 'BC-1' },

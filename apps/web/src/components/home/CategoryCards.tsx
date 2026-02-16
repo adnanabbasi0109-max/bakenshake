@@ -5,7 +5,7 @@ import Link from "next/link";
 const categories = [
   { name: "Cakes", slug: "cakes", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80" },
   { name: "Cookies", slug: "bakery", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&q=80" },
-  { name: "Pastries", slug: "bakery", image: "https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=400&q=80" },
+  { name: "Pastries", slug: "bakery", image: "https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=400&q=80" },
   { name: "Brownies", slug: "bakery", image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&q=80" },
   { name: "Beverages", slug: "beverages", image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80" },
   { name: "Burgers", slug: "food-menu", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" },
@@ -34,6 +34,7 @@ export default function CategoryCards() {
                   fill
                   sizes="112px"
                   className="object-cover group-hover:scale-110 transition-transform duration-300"
+                  unoptimized
                 />
               </div>
               <p className="mt-2 text-sm font-semibold text-text-primary group-hover:text-brand-red transition-colors">

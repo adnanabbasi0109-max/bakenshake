@@ -7,6 +7,7 @@ const footerLinks = {
     { label: "About Us", href: "/about" },
     { label: "All Products", href: "/products" },
     { label: "Custom Cake Builder", href: "/custom-cake" },
+    { label: "Health Subscriptions", href: "/subscriptions" },
     { label: "Track Order", href: "/track-order" },
     { label: "Careers", href: "/careers" },
   ],

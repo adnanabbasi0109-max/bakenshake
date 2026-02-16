@@ -27,15 +27,12 @@ export default function CakeBuilderCTA() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <span className="text-white/80 font-semibold text-sm tracking-widest uppercase block mb-3">
-                AI-Powered
-              </span>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
                 Design Your Dream Cake
               </h2>
               <p className="text-white/80 mb-6 max-w-md">
-                Choose your shape, flavour, frosting, and decorations — then see
-                an AI-generated preview of your custom cake before ordering.
+                Choose your shape, flavour, frosting, and decorations — then
+                preview your custom cake before ordering.
               </p>
               <Button href="/custom-cake" variant="secondary" size="lg">
                 Start Designing

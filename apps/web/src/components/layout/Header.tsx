@@ -15,6 +15,7 @@ const navLinks = [
   { label: "Food Menu", href: "/category/food-menu" },
   { label: "Combos", href: "/category/combos" },
   { label: "Hampers", href: "/category/festive-hampers" },
+  { label: "Subscriptions", href: "/subscriptions" },
 ];
 
 export default function Header() {

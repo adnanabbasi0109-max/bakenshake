@@ -15,11 +15,18 @@ const categoryRoutes = require('./routes/category.routes');
 const deliveryRoutes = require('./routes/delivery.routes');
 const customCakeRoutes = require('./routes/custom-cake.routes');
 const paymentRoutes = require('./routes/payment.routes');
+const subscriptionPlanRoutes = require('./routes/subscription-plan.routes');
+const subscriptionRoutes = require('./routes/subscription.routes');
+const subscriptionDeliveryRoutes = require('./routes/subscription-delivery.routes');
+const webhookRoutes = require('./routes/webhook.routes');
 
 const app = express();
 
 // Connect to MongoDB
 connectDB();
+
+// Webhook routes (needs raw body for signature verification — must be before express.json)
+app.use('/api/webhooks', express.raw({ type: 'application/json' }), webhookRoutes);
 
 // Middleware
 app.use(helmet());
@@ -43,6 +50,9 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/delivery', deliveryRoutes);
 app.use('/api/custom-cakes', customCakeRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/subscription-plans', subscriptionPlanRoutes);
+app.use('/api/subscriptions', subscriptionRoutes);
+app.use('/api/subscription-deliveries', subscriptionDeliveryRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
