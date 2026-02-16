@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft,
@@ -11,6 +12,8 @@ import {
   Paintbrush,
   Star,
   MessageCircle,
+  Home,
+  Cake,
 } from "lucide-react";
 import { useCakeBuilderStore } from "@/store/cakeBuilderStore";
 import { customCakeAPI } from "@/lib/api";
@@ -108,7 +111,7 @@ export default function CustomCakePage() {
             </Button>
             <Button
               fullWidth
-              onClick={() => (window.location.href = "/")}
+              href="/"
             >
               Back to Shop
             </Button>
@@ -120,8 +123,25 @@ export default function CustomCakePage() {
 
   return (
     <div className="min-h-screen bg-brand-cream/30">
-      {/* Header */}
-      <div className="bg-white border-b border-brand-sage/20 sticky top-0 z-30">
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-brand-sage/10">
+        <div className="max-w-7xl mx-auto px-4 py-3">
+          <nav className="flex items-center gap-2 text-sm text-text-muted">
+            <Link href="/" className="flex items-center gap-1 hover:text-brand-red transition-colors">
+              <Home size={14} />
+              Home
+            </Link>
+            <span>/</span>
+            <span className="flex items-center gap-1 text-brand-red font-medium">
+              <Cake size={14} />
+              Custom Cake Builder
+            </span>
+          </nav>
+        </div>
+      </div>
+
+      {/* Sticky Step Header — offset below main header */}
+      <div className="bg-white border-b border-brand-sage/20 sticky top-16 md:top-20 z-30">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-3">
             <h1 className="font-display text-xl md:text-2xl font-bold text-text-primary">

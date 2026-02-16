@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 
@@ -38,11 +37,9 @@ export default function CakeBuilderCTA() {
                 Choose your shape, flavour, frosting, and decorations — then see
                 an AI-generated preview of your custom cake before ordering.
               </p>
-              <Link href="/custom-cake">
-                <Button variant="secondary" size="lg">
-                  Start Designing
-                </Button>
-              </Link>
+              <Button href="/custom-cake" variant="secondary" size="lg">
+                Start Designing
+              </Button>
             </motion.div>
 
             <motion.div

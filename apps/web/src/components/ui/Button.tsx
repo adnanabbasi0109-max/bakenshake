@@ -1,14 +1,20 @@
 "use client";
-import { forwardRef, ButtonHTMLAttributes } from "react";
+import { forwardRef, ButtonHTMLAttributes, MouseEvent } from "react";
+import Link from "next/link";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonBaseProps {
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
+  href?: string;
+  onClick?: (e: MouseEvent) => void;
 }
 
+type ButtonProps = ButtonBaseProps &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof ButtonBaseProps>;
+
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = "primary", size = "md", fullWidth, className = "", children, ...props }, ref) => {
+  ({ variant = "primary", size = "md", fullWidth, href, onClick, className = "", children, ...props }, ref) => {
     const base =
       "inline-flex items-center justify-center font-body font-semibold rounded-brand transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
 
@@ -26,10 +32,21 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       lg: "px-8 py-4 text-lg",
     };
 
+    const classes = `${base} ${variants[variant]} ${sizes[size]} ${fullWidth ? "w-full" : ""} ${className}`;
+
+    if (href) {
+      return (
+        <Link href={href} className={classes} onClick={onClick}>
+          {children}
+        </Link>
+      );
+    }
+
     return (
       <button
         ref={ref}
-        className={`${base} ${variants[variant]} ${sizes[size]} ${fullWidth ? "w-full" : ""} ${className}`}
+        className={classes}
+        onClick={onClick}
         {...props}
       >
         {children}

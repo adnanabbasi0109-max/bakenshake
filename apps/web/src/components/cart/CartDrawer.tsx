@@ -175,11 +175,9 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       <span className="text-brand-red">₹{total}</span>
                     </div>
                   </div>
-                  <Link href="/checkout" onClick={onClose}>
-                    <Button fullWidth size="lg">
-                      Proceed to Checkout
-                    </Button>
-                  </Link>
+                  <Button href="/checkout" fullWidth size="lg">
+                    Proceed to Checkout
+                  </Button>
                 </div>
               </>
             )}

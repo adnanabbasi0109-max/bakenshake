@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 
@@ -40,14 +39,10 @@ export default function HeroSection() {
               Indore & Gwalior.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/category/cakes">
-                <Button size="lg">Order Cakes</Button>
-              </Link>
-              <Link href="/custom-cake">
-                <Button variant="outline" size="lg">
-                  Build Custom Cake
-                </Button>
-              </Link>
+              <Button href="/category/cakes" size="lg">Order Cakes</Button>
+              <Button href="/custom-cake" variant="outline" size="lg">
+                Build Custom Cake
+              </Button>
             </div>
 
             {/* Trust badges */}
