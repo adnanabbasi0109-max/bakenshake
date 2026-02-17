@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Brand Colors */
+  --color-brand-red: #A8384C;
+  --color-brand-red-dark: #8A2E3E;
+  --color-brand-red-light: #C45A6E;
+  --color-brand-sage: #C5D4C0;
+  --color-brand-sage-dark: #A8B9A3;
+  --color-brand-sage-light: #D8E4D4;
+  --color-brand-lavender: #9E8EA8;
+  --color-brand-lavender-light: #B8ABC0;
+  --color-brand-blush: #E8BFC0;
+  --color-brand-cream: #F0E6D8;
+  --color-brand-brown: #6B4C3B;
+
+  /* Text Colors */
+  --color-text-primary: #2D2D2D;
+  --color-text-secondary: #5A5A5A;
+  --color-text-muted: #8A8A8A;
+  --color-text-inverse: #FFFFFF;
+
+  /* Fonts */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "DM Sans", "Inter", system-ui, sans-serif;
+
+  /* Border Radius */
+  --radius-brand: 12px;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  background-color: #FFFFFF;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-brand-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-lavender);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-red);
+}
+
+/* Hide scrollbar on horizontal carousels */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
