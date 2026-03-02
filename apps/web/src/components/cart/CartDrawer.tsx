@@ -1,11 +1,31 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import Script from "next/script";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
+import { paymentAPI } from "@/lib/api";
 import Button from "@/components/ui/Button";
+
+declare global {
+  interface Window {
+    Razorpay: new (options: {
+      key: string;
+      amount: number;
+      order_id: string;
+      name: string;
+      description?: string;
+      handler: (res: {
+        razorpay_payment_id: string;
+        razorpay_order_id: string;
+        razorpay_signature: string;
+      }) => void;
+      prefill?: { name?: string; email?: string; contact?: string };
+    }) => { open: () => void; on: (event: string, callback: () => void) => void };
+  }
+}
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -13,11 +33,66 @@ interface CartDrawerProps {
 }
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-  const { items, updateQuantity, removeItem, getSubtotal } = useCartStore();
+  const router = useRouter();
+  const { items, updateQuantity, removeItem, getSubtotal, clearCart } = useCartStore();
+  const [isPaying, setIsPaying] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const subtotal = getSubtotal();
   const gst = Math.round(subtotal * 0.05);
   const deliveryCharge = subtotal >= 499 ? 0 : 49;
   const total = subtotal + gst + deliveryCharge;
+  const totalPaise = Math.round(total * 100);
+
+  const handlePay = useCallback(async () => {
+    if (items.length === 0 || totalPaise < 100) return;
+    setError(null);
+    setIsPaying(true);
+    try {
+      const { orderId, keyId } = await paymentAPI.createOrder(totalPaise);
+      if (!orderId || !keyId) {
+        setError("Could not create payment order.");
+        setIsPaying(false);
+        return;
+      }
+      if (typeof window === "undefined" || !window.Razorpay) {
+        setError("Razorpay failed to load. Please try again.");
+        setIsPaying(false);
+        return;
+      }
+      const rzp = new window.Razorpay({
+        key: keyId,
+        amount: totalPaise,
+        order_id: orderId,
+        name: "Bake n Shake",
+        description: "Order payment",
+        handler: async (res) => {
+          try {
+            await paymentAPI.verify({
+              razorpay_order_id: res.razorpay_order_id,
+              razorpay_payment_id: res.razorpay_payment_id,
+              razorpay_signature: res.razorpay_signature,
+            });
+            clearCart();
+            onClose();
+            router.push("/checkout/success");
+          } catch {
+            setError("Payment verification failed. Please contact support.");
+          } finally {
+            setIsPaying(false);
+          }
+        },
+      });
+      rzp.on("payment.failed", () => {
+        setError("Payment failed or was cancelled.");
+        setIsPaying(false);
+      });
+      rzp.open();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Payment could not be started.");
+      setIsPaying(false);
+    }
+  }, [items.length, totalPaise, clearCart, onClose, router]);
 
   useEffect(() => {
     if (isOpen) {
@@ -31,6 +106,8 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   }, [isOpen]);
 
   return (
+    <>
+    <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
     <AnimatePresence>
       {isOpen && (
         <>
@@ -176,8 +253,11 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       <span className="text-brand-red">₹{total}</span>
                     </div>
                   </div>
-                  <Button href="/checkout" fullWidth size="lg">
-                    Proceed to Checkout
+                  {error && (
+                    <p className="text-red-600 text-xs">{error}</p>
+                  )}
+                  <Button fullWidth size="lg" onClick={handlePay} disabled={isPaying}>
+                    {isPaying ? "Opening Razorpay..." : `Pay ₹${total}`}
                   </Button>
                 </div>
               </>
@@ -186,5 +266,6 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         </>
       )}
     </AnimatePresence>
+    </>
   );
 }
