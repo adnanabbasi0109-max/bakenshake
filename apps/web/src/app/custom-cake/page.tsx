@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { useCakeBuilderStore } from "@/store/cakeBuilderStore";
 import { useCartStore } from "@/store/cartStore";
-import { customCakeAPI } from "@/lib/api";
+
 import Button from "@/components/ui/Button";
 import ShapeAndSizeStep from "@/components/cake-builder/ShapeAndSizeStep";
 import FlavorAndFillingStep from "@/components/cake-builder/FlavorAndFillingStep";
@@ -47,33 +47,22 @@ export default function CustomCakePage() {
   const goPrev = () => setCurrentStep((s) => Math.max(s - 1, 0));
   const goTo = (step: number) => setCurrentStep(step);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = () => {
     setIsSubmitting(true);
     try {
-      const res = await customCakeAPI.create({
-        specifications: specifications as unknown as Record<string, unknown>,
-        aiPreviewImageUrl: previewImageUrl || undefined,
-        customerNotes: undefined,
+      const id = `custom-${Date.now()}`;
+      const cakeName = `Custom ${specifications.flavor} Cake (${specifications.shape})`;
+
+      addItem({
+        productId: id,
+        variantId: id,
+        name: cakeName,
+        image: previewImageUrl || "https://images.unsplash.com/photo-1557979619-445218f326b9?w=400&q=80",
+        size: specifications.size,
+        price: pricing?.total || 0,
       });
 
-      const data = res as { success: boolean; data?: { _id: string } };
-      if (data.success && data.data) {
-        const orderId = data.data._id;
-        const cakeName = `Custom ${specifications.flavor} Cake (${specifications.shape})`;
-
-        addItem({
-          productId: orderId,
-          variantId: `custom-${orderId}`,
-          name: cakeName,
-          image: previewImageUrl || "https://images.unsplash.com/photo-1557979619-445218f326b9?w=400&q=80",
-          size: specifications.size,
-          price: pricing?.total || 0,
-        });
-
-        reset();
-      }
-    } catch {
-      // Silently handle — user can retry
+      reset();
     } finally {
       setIsSubmitting(false);
     }
