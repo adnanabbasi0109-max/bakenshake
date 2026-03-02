@@ -103,20 +103,31 @@ export const authAPI = {
   getMe: () => fetchAPI("/auth/me"),
 };
 
-// Custom Cake APIs
+// Custom Cake APIs — generate-preview & calculate-price use local Next.js API routes
+// so they work on Vercel without a separate backend server.
+async function fetchLocal<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  const res = await fetch(endpoint, {
+    ...options,
+    headers: { "Content-Type": "application/json", ...options.headers },
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Something went wrong");
+  return data;
+}
+
 export const customCakeAPI = {
   generatePreview: (specifications: Record<string, unknown>) =>
-    fetchAPI<{
+    fetchLocal<{
       success: boolean;
       data: { imageUrl: string; prompt: string; pricing: Record<string, number> };
-    }>("/custom-cakes/generate-preview", {
+    }>("/api/custom-cakes/generate-preview", {
       method: "POST",
       body: JSON.stringify({ specifications }),
     }),
 
   calculatePrice: (specifications: Record<string, unknown>) =>
-    fetchAPI<{ success: boolean; data: Record<string, number> }>(
-      "/custom-cakes/calculate-price",
+    fetchLocal<{ success: boolean; data: Record<string, number> }>(
+      "/api/custom-cakes/calculate-price",
       {
         method: "POST",
         body: JSON.stringify({ specifications }),
