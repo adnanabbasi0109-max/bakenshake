@@ -230,6 +230,7 @@ export default function SubscriptionPlanDetailPage({
   const [selectedFrequency, setSelectedFrequency] = useState("weekly");
   const [swapModalOpen, setSwapModalOpen] = useState(false);
   const [currentProductId, setCurrentProductId] = useState("");
+  const [items, setItems] = useState<PlanItem[]>(plan.items);
 
   const frequencies = [
     { value: "weekly", label: "Weekly", price: plan.priceWeekly },
@@ -238,15 +239,35 @@ export default function SubscriptionPlanDetailPage({
   ];
 
   const { subtotal, discountAmount, deliveryCharge, taxAmount, totalAmount, displayPrice } =
-    calculatePricing(plan, selectedFrequency);
+    calculatePricing({ ...plan, items }, selectedFrequency);
 
   const handleSwap = (productId: string) => {
     setCurrentProductId(productId);
     setSwapModalOpen(true);
   };
 
-  const handleSwapConfirm = (_newProductId: string, _newVariantIndex: number) => {
-    // In a real app this would update basket state via API/store
+  const handleSwapConfirm = (newProductId: string, _newVariantIndex: number) => {
+    // Find the swap product details from the SwapModal's demo data
+    const SWAP_CATALOG: Record<string, { name: string; image: string; price: number }> = {
+      prod_001: { name: "Multigrain Protein Cookie", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=80", price: 120 },
+      prod_002: { name: "Sugar-Free Almond Brownie", image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=200&q=80", price: 150 },
+      prod_003: { name: "Oats & Raisin Energy Bar", image: "https://images.unsplash.com/photo-1622484212850-eb596d769edc?w=200&q=80", price: 90 },
+      prod_004: { name: "Keto Chocolate Muffin", image: "https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=200&q=80", price: 180 },
+      prod_005: { name: "Vegan Banana Bread", image: "https://images.unsplash.com/photo-1605090930601-31e4e22b4e15?w=200&q=80", price: 160 },
+      prod_006: { name: "Gluten-Free Coconut Biscuit", image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=80", price: 100 },
+    };
+
+    const newProduct = SWAP_CATALOG[newProductId];
+    if (newProduct) {
+      setItems((prev) =>
+        prev.map((item) =>
+          item.productId === currentProductId
+            ? { ...item, productId: newProductId, name: newProduct.name, image: newProduct.image, price: newProduct.price }
+            : item
+        )
+      );
+    }
+
     setSwapModalOpen(false);
     setCurrentProductId("");
   };
@@ -332,7 +353,7 @@ export default function SubscriptionPlanDetailPage({
         {/* ------ Basket Preview ------ */}
         <section className="bg-white rounded-brand p-5 sm:p-6 shadow-sm border border-brand-sage/20">
           <BasketPreview
-            items={plan.items}
+            items={items}
             onSwap={handleSwap}
             title="What's in your box"
           />

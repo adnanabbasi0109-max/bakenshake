@@ -83,6 +83,7 @@ export default function PreviewPanel() {
             fill
             sizes="(max-width: 1024px) 100vw, 400px"
             className="object-cover"
+            unoptimized
           />
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
