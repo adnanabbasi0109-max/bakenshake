@@ -173,11 +173,11 @@ export const customCakeAPI = {
     }>("/custom-cakes/my-orders"),
 };
 
-// Payment (Razorpay) APIs
+// Payment (Razorpay) APIs — use local Next.js API routes
 export const paymentAPI = {
   createOrder: (amountPaise: number) =>
-    fetchAPI<{ success: boolean; orderId: string; keyId: string }>(
-      "/payment/create-order",
+    fetchLocal<{ success: boolean; orderId: string; keyId: string }>(
+      "/api/payment/create-order",
       { method: "POST", body: JSON.stringify({ amount: amountPaise }) }
     ),
 
@@ -186,7 +186,7 @@ export const paymentAPI = {
     razorpay_payment_id: string;
     razorpay_signature: string;
   }) =>
-    fetchAPI<{ success: boolean; message?: string }>("/payment/verify", {
+    fetchLocal<{ success: boolean; message?: string }>("/api/payment/verify", {
       method: "POST",
       body: JSON.stringify(data),
     }),
